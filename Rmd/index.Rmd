@@ -1,0 +1,37 @@
+---
+title: Analisi variabili meteo
+author: ISPRA
+date: "`r lubridate::today()`" 
+---
+[Variabile t2m](./t2m.html)
+
+[Variabile tmin2m](./tmin2m.html)
+
+[Variabile tmax2m](./tmax2m.html)
+
+[Variabile tp](./tp.html)
+
+[Variabile ptp](./ptp.html)
+
+[Variabile rh](./rh.html)
+
+[Variabile u10m](./u10m.html)
+
+[Variabile v10m](./v10m.html)
+
+[Variabile wspeed](./wspeed.html)
+
+[Variabile pwspeed](./pwspeed.html)
+
+[Variabile wdir](./wdir.html)
+
+[Variabile nirradiance](./nirradiance.html)
+
+[Variabile pbl00](./pbl00.html)
+
+[Variabile pbl12](./pbl12.html)
+
+[Variabile pblmin](./pblmin.html)
+
+[Variabile pblmax](./pblmax.html)
+

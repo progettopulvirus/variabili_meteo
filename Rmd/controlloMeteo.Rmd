@@ -1,0 +1,132 @@
+---
+title: Variabili meteo, sintesi dati
+author: ISPRA
+date: "`r lubridate::today()`"
+params:
+  variabileMeteo: "t2m"
+---
+
+```{r intro,echo=FALSE,message=FALSE,warning=FALSE,include=FALSE}
+#rm(list=objects())
+library("tidyverse")
+library("vroom")
+library("furrr")
+library("skimr")
+library("seplyr")
+library("knitr")
+library("lubridate")
+library("knitr")
+
+cols(.default = col_double(),
+     station_eu_code=col_character(),
+     date=col_date(format="%Y-%m-%d"))->TIPI
+
+vroom("meteo.csv",delim=";",
+      col_names = TRUE,
+      col_types = TIPI) %>%
+  filter(!is.na(station_eu_code))->dati
+
+read_delim("anaMeteo.csv",delim=";",col_names = TRUE)->ana
+
+if(is.null(params$variabileMeteo)) stop("Specificare la variabile meteo")
+
+params$variabileMeteo->nomeVar
+```
+
+## `r Hmisc::capitalize(params$variabileMeteo)`
+
+```{r preparaDati,include=FALSE,echo=FALSE,message=FALSE,warning=FALSE}
+
+  dati %>%
+    seplyr::select_se(c("date","station_eu_code",nomeVar)) %>%
+    mutate(mm=lubridate::month(date)) %>%
+    mutate(yy=lubridate::year(date)) %>%    
+    mutate(seas=case_when(mm %in% c(1,2,12)~1,
+                          mm %in% c(3,4,5)~2,
+                          mm %in% c(6,7,8)~3,
+                          TRUE~4)) %>%
+    mutate(seas=factor(seas,levels=c("1","2","3","4"),ordered=TRUE))->subDati
+
+  left_join(subDati,ana[,c("station_eu_code","regione")],by=c("station_eu_code"="station_eu_code"))->subDati
+  
+  subDati %>%
+    filter(!is.na(regione))->subDati
+
+  names(subDati)[grepl(nomeVar,names(subDati))]<-"var" 
+  
+  #per ridurre la lunghezza delle stringhe "regione
+  subDati %>%
+    mutate(regione=str_wrap(regione,width=30))->subDati
+  
+```
+  
+```{r grafico,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+graficoBoxplot<-function(.x,stagione){
+  
+    ggplot(data=.x[.x$seas==stagione,])+
+    geom_boxplot(aes(x=regione,y=var))+
+    theme_bw()+
+    theme(text=element_text(family="Lato",hjust=1),
+          axis.text.x.bottom = element_text(angle=90),
+          )
+  
+}#fine graficoBoxplot
+
+mySkim<-function(.x,stagione){
+  
+    .x %>% 
+    filter(seas==stagione) %>%
+    dplyr::select(var,seas,regione) %>% 
+    group_by(seas,regione) %>%
+    skim()
+  
+}
+
+
+```    
+  
+### Inverno  
+  
+```{r inverno,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+graficoBoxplot(.x=subDati,stagione=1)->grafico
+print(grafico)
+```    
+  
+```{r skimR,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+mySkim(.x=subDati,stagione=1)
+```
+
+
+### Primavera 
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+graficoBoxplot(.x=subDati,stagione=2)->grafico
+print(grafico)
+```    
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+mySkim(.x=subDati,stagione=2)
+```
+
+### Estate 
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+graficoBoxplot(.x=subDati,stagione=3)->grafico
+print(grafico)
+```    
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+mySkim(.x=subDati,stagione=3)
+```
+
+### Autunno
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+graficoBoxplot(.x=subDati,stagione=4)->grafico
+print(grafico)
+```    
+  
+```{r,include=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+mySkim(.x=subDati,stagione=4)
+```
+
