@@ -4,6 +4,7 @@ library("vroom")
 library("furrr")
 library("skimr")
 library("seplyr")
+library("read.so")
 
 cols(.default = col_double(),
      station_eu_code=col_character(),
@@ -19,6 +20,9 @@ read_delim("anaMeteo.csv",delim=";",col_names = TRUE)->ana
 names(dati)->nomi
 nomi[! grepl("^[sdca]",nomi)]->variabiliMeteo
 
+read_md(file="tabellaVariabiliMeteo.md")->tabellaMeteo
+
+
 sink("index.Rmd",append=FALSE)
 cat("---\n")
 cat("title: Analisi variabili meteo\n")
@@ -26,10 +30,33 @@ cat("author: ISPRA\n")
 cat("date: \"`r lubridate::today()`\" \n")
 cat("---\n")
 
+cat(paste0("\n\n","Sintesi descrittiva delle variabili meteoclimatiche estratte da ERA5.","\n\n"))
 
 purrr::walk(variabiliMeteo,.f=function(nomeVar){ 
   
-  stringa<-glue::glue("[Variabile {nomeVar}](./{nomeVar}.html)")
+  
+  myEmojy<-""
+  
+  if(grepl("2m",nomeVar)){
+    myEmojy<-"thermometer"
+  }else if(grepl("tp",nomeVar)){
+    myEmojy<-"umbrella"
+  }else if(grepl("rh",nomeVar)){
+    myEmojy<-"sweat_drops"
+  }else if(grepl("(10m|w)",nomeVar)){
+    myEmojy<-"wind_face"
+  }else if(grepl("nirradiance",nomeVar)){
+    myEmojy<-"sunny"
+  }else if(grepl("pbl",nomeVar)){
+    myEmojy<-"straight_ruler"
+  }
+  
+  grep(paste0("^ *",nomeVar," *$"),tabellaMeteo$Codice,ignore.case = TRUE)->riga
+  if(length(riga)!=1) browser()
+  
+  stringa<-glue::glue("[{tabellaMeteo$Codice[riga]}](./{nomeVar}.html) {emo::ji(myEmojy)}")
+  cat(paste0(glue::glue("#### {tabellaMeteo$Nome[riga]}"),"\n"))
+  cat("\n")
   cat(paste0(stringa,"\n"))
   cat("\n")
   

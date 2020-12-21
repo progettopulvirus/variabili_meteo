@@ -3,35 +3,71 @@ title: Analisi variabili meteo
 author: ISPRA
 date: "`r lubridate::today()`" 
 ---
-[Variabile t2m](./t2m.html)
 
-[Variabile tmin2m](./tmin2m.html)
 
-[Variabile tmax2m](./tmax2m.html)
+Sintesi descrittiva delle variabili meteoclimatiche estratte da ERA5.
 
-[Variabile tp](./tp.html)
+#### Average temperature (2m)
 
-[Variabile ptp](./ptp.html)
+[t2m](./t2m.html) 🌡
 
-[Variabile rh](./rh.html)
+#### Minimum temperature (2m)
 
-[Variabile u10m](./u10m.html)
+[tmin2m](./tmin2m.html) 🌡
 
-[Variabile v10m](./v10m.html)
+#### Maximum temperature (2m)
 
-[Variabile wspeed](./wspeed.html)
+[tmax2m](./tmax2m.html) 🌡
 
-[Variabile pwspeed](./pwspeed.html)
+#### Total precipitation
 
-[Variabile wdir](./wdir.html)
+[tp](./tp.html) ☂️
 
-[Variabile nirradiance](./nirradiance.html)
+#### Previous day total precipitation
 
-[Variabile pbl00](./pbl00.html)
+[ptp](./ptp.html) ☂️
 
-[Variabile pbl12](./pbl12.html)
+#### Relative Humidity
 
-[Variabile pblmin](./pblmin.html)
+[rh](./rh.html) 💦
 
-[Variabile pblmax](./pblmax.html)
+#### Wind U component (10 meters)
+
+[u10m](./u10m.html) 🌬
+
+#### Wind V component (10 meters)
+
+[v10m](./v10m.html) 🌬
+
+#### Wind speed
+
+[wspeed](./wspeed.html) 🌬
+
+#### Previous day wind speed
+
+[pwspeed](./pwspeed.html) 🌬
+
+#### Wind direction
+
+[wdir](./wdir.html) 🌬
+
+#### Net irradiance
+
+[nirradiance](./nirradiance.html) ☀️
+
+#### Planet Boundary Layer ore 00
+
+[pbl00](./pbl00.html) 📏
+
+#### Planet Boundary Layer ore 12
+
+[pbl12](./pbl12.html) 📏
+
+#### Planet Boundary Layer daily minimum
+
+[pblmin](./pblmin.html) 📏
+
+#### Planet Boundary Layer daily maximum
+
+[pblmax](./pblmax.html) 📏
 
