@@ -1,2 +1,3 @@
-# variabili_meteo
-Sintesi delle variabili meteo
+# Variabili Meteo
+
+Sintesi delle variabili meteo estratte dalle rianalisi del modello ERA5.
