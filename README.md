@@ -2,6 +2,8 @@
 
 [Sintesi](https://pulvirus.github.io/variabili_meteo/) delle variabili meteo estratte dalle rianalisi del modello ERA5.
 
+I parametri wspeed, wdir e pwspeed sono stati ricalcolati in quanto quelli forniti inizialmente si sono rivelati errati.
+
 ## Tabella Variabili Meteo
 
 | Nome | Codice | Unita | Aggregazione giornaliera |
